@@ -606,6 +606,9 @@ class Chat {
                 MsgType: 49 + 6,
                 HeadImgUrl: session.user.User.HeadImgUrl,
             }),
+            onUploadProgress: function(progressEvent) {
+                console.log('123: ' + progressEvent);
+            },
         };
 
         if (res.data.BaseResponse.Ret !== 0) {
