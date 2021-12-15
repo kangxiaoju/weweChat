@@ -91,6 +91,12 @@ class App extends Component {
             }
         });
 
+        ipcRenderer.on('show-messageInput', () => {
+            if (this.canisend()) {
+                document.querySelector('#messageInput').focus();
+            }
+        });
+
         // Show contacts page
         ipcRenderer.on('show-contacts', () => {
             navigator.history.push('/contacts');

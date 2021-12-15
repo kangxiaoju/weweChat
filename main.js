@@ -31,10 +31,18 @@ let mainMenu = [
             },
             {
                 label: 'Preferences...',
-                accelerator: 'Cmd+,',
+                accelerator: !isOsx ? 'Ctrl+,' : 'Cmd+,',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-settings');
+                }
+            },
+            {
+                label: 'messageInput',
+                accelerator: 'Esc',
+                click() {
+                    mainWindow.show();
+                    mainWindow.webContents.send('show-messageInput');
                 }
             },
             {
@@ -51,7 +59,7 @@ let mainMenu = [
             },
             {
                 label: 'Check for updates',
-                accelerator: 'Cmd+U',
+                accelerator: !isOsx ? 'Ctrl+U' : 'Cmd+U',
                 click() {
                     checkForUpdates();
                 }
@@ -61,7 +69,7 @@ let mainMenu = [
             },
             {
                 label: 'Quit weweChat',
-                accelerator: 'Command+Q',
+                accelerator: !isOsx ? 'Alt+Q' : 'Command+Q',
                 selector: 'terminate:',
                 click() {
                     forceQuit = true;
@@ -76,7 +84,7 @@ let mainMenu = [
         submenu: [
             {
                 label: 'New Chat',
-                accelerator: 'Cmd+N',
+                accelerator: !isOsx ? 'Ctrl+N' : 'Cmd+N',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-newchat');
@@ -84,7 +92,7 @@ let mainMenu = [
             },
             {
                 label: 'Search...',
-                accelerator: 'Cmd+F',
+                accelerator: !isOsx ? 'Ctrl+F' : 'Cmd+F',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-search');
@@ -92,7 +100,7 @@ let mainMenu = [
             },
             {
                 label: 'Batch Send Message',
-                accelerator: 'Cmd+B',
+                accelerator: !isOsx ? 'Ctrl+B' : 'Cmd+B',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-batchsend');
@@ -103,7 +111,7 @@ let mainMenu = [
             },
             {
                 label: 'Insert emoji',
-                accelerator: 'Cmd+I',
+                accelerator: !isOsx ? 'Ctrl+I' : 'Cmd+I',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-emoji');
@@ -114,7 +122,7 @@ let mainMenu = [
             },
             {
                 label: 'Next conversation',
-                accelerator: 'Cmd+J',
+                accelerator: !isOsx ? 'Ctrl+J' : 'Cmd+J',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-next');
@@ -122,7 +130,7 @@ let mainMenu = [
             },
             {
                 label: 'Previous conversation',
-                accelerator: 'Cmd+K',
+                accelerator: !isOsx ? 'Ctrl+K' : 'Cmd+K',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-previous');
@@ -186,7 +194,7 @@ let mainMenu = [
         submenu: [
             {
                 label: isFullScreen ? 'Exit Full Screen' : 'Enter Full Screen',
-                accelerator: 'Shift+Cmd+F',
+                accelerator: !isOsx ? 'Ctrl+Shift+F' : 'Shift+Cmd+F',
                 click() {
                     isFullScreen = !isFullScreen;
 
@@ -196,7 +204,7 @@ let mainMenu = [
             },
             {
                 label: 'Toggle Conversations',
-                accelerator: 'Shift+Cmd+M',
+                accelerator: !isOsx ? 'Ctrl+Shift+M' : 'Shift+Cmd+M',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-conversations');
@@ -277,7 +285,7 @@ let trayMenu = [
     },
     {
         label: 'Preferences...',
-        accelerator: 'Cmd+,',
+        accelerator: !isOsx ? 'Ctrl+,' : 'Cmd+,',
         click() {
             mainWindow.show();
             mainWindow.webContents.send('show-settings');
@@ -294,7 +302,7 @@ let trayMenu = [
     },
     {
         label: 'Toggle DevTools',
-        accelerator: 'Alt+Command+I',
+        accelerator: !isOsx ? 'Ctrl+Alt+I' : 'Alt+Command+I',
         click() {
             mainWindow.show();
             mainWindow.toggleDevTools();
@@ -311,14 +319,14 @@ let trayMenu = [
     },
     {
         label: 'Check for updates',
-        accelerator: 'Cmd+U',
+        accelerator: !isOsx ? 'Ctrl+U' : 'Cmd+U',
         click() {
             checkForUpdates();
         }
     },
     {
         label: 'Quit weweChat',
-        accelerator: 'Command+Q',
+        accelerator: !isOsx ? 'Alt+Q' : 'Command+Q',
         selector: 'terminate:',
         click() {
             forceQuit = true;
@@ -472,11 +480,12 @@ async function autostart() {
 function createMenu() {
     var menu = Menu.buildFromTemplate(mainMenu);
 
-    if (isOsx) {
-        Menu.setApplicationMenu(menu);
-    } else {
-        mainWindow.setMenu(null);
-    }
+    Menu.setApplicationMenu(menu);
+    // if (isOsx) {
+    //     Menu.setApplicationMenu(menu);
+    // } else {
+    //     mainWindow.setMenu(null);
+    // }
 }
 
 const createMainWindow = () => {
@@ -500,7 +509,7 @@ const createMainWindow = () => {
         frame: !isWin,
         icon
     });
-
+    mainWindow.webContents.openDevTools()
     mainWindow.setSize(350, 460);
     mainWindow.loadURL(
         `file://${__dirname}/src/index.html`
@@ -552,9 +561,9 @@ const createMainWindow = () => {
         var contactsMenu = mainMenu.find(e => e.label === 'Contacts');
         var shouldUpdate = false;
 
-        if (!isOsx) {
-            return;
-        }
+        // if (!isOsx) {
+        //     return;
+        // }
 
         if (conversations.length
             && conversations.map(e => e.name).join() !== conversationsMenu.submenu.map(e => e.label).join()) {
@@ -566,7 +575,7 @@ const createMainWindow = () => {
 
                     return {
                         label: e.name,
-                        accelerator: `Cmd+${index}`,
+                        accelerator: !isOsx ? `Ctrl+${index}` : `Cmd+${index}`,
                         icon,
                         click() {
                             mainWindow.show();
