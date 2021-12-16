@@ -813,6 +813,7 @@ class Chat {
     }
 
     @action async upload(file, user = self.user) {
+        console.error('upload file start');
         var id = (+new Date() * 1000) + Math.random().toString().substr(2, 4);
         var md5 = await helper.md5(file);
         var auth = await storage.get('auth');
@@ -886,7 +887,6 @@ class Chat {
                 ToUserName: user.UserName,
             });
             let data = response.data;
-
             if (data.BaseResponse.Ret === 0) {
                 payment.AESKey = data.AESKey;
                 payment.Signature = data.Signature;
@@ -902,6 +902,7 @@ class Chat {
 
         if (!response
             || response.data.BaseResponse.Ret === 0) {
+            console.error('upload file end');
             return {
                 type,
                 mediaId: payment.MediaId || response.data.MediaId,

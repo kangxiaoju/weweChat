@@ -230,6 +230,7 @@ export default class ChatContent extends Component {
                 /* eslint-disable */
                 return `
                     <div class="${classes.file}" data-id="${message.MsgId}">
+                        
                         <img src="assets/images/filetypes/${helper.getFiletypeIcon(file.extension)}" class="disabledDrag" />
 
                         <div>
@@ -242,6 +243,12 @@ export default class ChatContent extends Component {
                                 ? '<i class="icon-ion-android-arrow-up"></i>'
                                 : (download.done ? '<i class="icon-ion-android-more-horizontal is-file"></i>' : '<i class="icon-ion-android-arrow-down is-download"></i>')
                         }
+                      <div class="logding" style="${uploading ? 'display: block' : 'display: none'}">
+                        <div class="spinner">
+                          <div class="double-bounce1"></div>
+                          <div class="double-bounce2"></div>
+                        </div>
+                      </div>
                     </div>
                 `;
                 /* eslint-enable */

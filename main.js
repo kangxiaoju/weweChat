@@ -480,12 +480,11 @@ async function autostart() {
 function createMenu() {
     var menu = Menu.buildFromTemplate(mainMenu);
 
-    Menu.setApplicationMenu(menu);
-    // if (isOsx) {
-    //     Menu.setApplicationMenu(menu);
-    // } else {
-    //     mainWindow.setMenu(null);
-    // }
+    if (isOsx) {
+        Menu.setApplicationMenu(menu);
+    } else {
+        mainWindow.setMenu(menu);
+    }
 }
 
 const createMainWindow = () => {
@@ -509,7 +508,7 @@ const createMainWindow = () => {
         frame: !isWin,
         icon
     });
-    mainWindow.webContents.openDevTools()
+
     mainWindow.setSize(350, 460);
     mainWindow.loadURL(
         `file://${__dirname}/src/index.html`
