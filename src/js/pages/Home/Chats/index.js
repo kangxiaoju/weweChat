@@ -118,7 +118,6 @@ export default class Chats extends Component {
                             var message = this.getTheLastestMessage(e.UserName) || {};
                             var muted = helper.isMuted(e);
                             var isTop = helper.isTop(e);
-
                             return (
                                 <div
                                     className={clazz(classes.chat, {

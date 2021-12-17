@@ -88,7 +88,6 @@ import { on, off } from 'utils/event';
 export default class ChatContent extends Component {
     getMessageContent(message) {
         var uploading = message.uploading;
-
         switch (message.MsgType) {
             case 1:
                 if (message.location) {
